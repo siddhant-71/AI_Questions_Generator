@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Questions.css";
 import { jsPDF } from "jspdf";
@@ -7,6 +7,7 @@ const Questions = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Example data (dummy for now)
   const exampleQuestions = [
     {
       question: "What is Artificial Intelligence?",
@@ -32,6 +33,8 @@ const Questions = () => {
 
   const questions = location.state?.questions || exampleQuestions;
   const topic = location.state?.topic || "Artificial Intelligence";
+
+  const [showAnswers, setShowAnswers] = useState(false);
 
   // ---------- PDF Export Logic ----------
   const exportPDF = (type) => {
@@ -77,33 +80,45 @@ const Questions = () => {
 
   return (
     <div className="questions-container">
-      {/* 🌸 Floating Animated Background */}
-      {[...Array(12)].map((_, i) => (
-        <div key={i} className={`floating floating-${i + 1}`}></div>
-      ))}
+      {/* 🌈 Floating Backgrounds (behind everything) */}
+      <div className="floating-wrapper">
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className={`floating floating-${i + 1}`}></div>
+        ))}
+      </div>
 
-      {/* Header Section */}
+      {/* HEADER SECTION */}
       <div className="questions-header">
         <button className="back-btn" onClick={() => navigate("/")}>
           ←
         </button>
         <h1 className="topic-title">AI Questions on "{topic}"</h1>
+
+        {/* SHOW/HIDE ANSWERS BUTTON */}
+        <button
+          className="toggle-answers-btn"
+          onClick={() => setShowAnswers(!showAnswers)}
+        >
+          {showAnswers ? "🙈 Hide Answers" : "👁️ Show Answers"}
+        </button>
       </div>
 
-      {/* Questions List */}
+      {/* QUESTIONS LIST */}
       <div className="questions-list">
         {questions.map((q, index) => (
           <div className="question-card" key={index}>
             <h2 className="question-text">
               {index + 1}. {q.question}
             </h2>
-            <p className="answer-text">{q.answer}</p>
+            {showAnswers && (
+              <p className="answer-text animate-answer">{q.answer}</p>
+            )}
           </div>
         ))}
       </div>
 
-      {/* Button Controls */}
-      <div className="buttons-row">
+      {/* FIXED BOTTOM BUTTON BAR */}
+      <div className="fixed-buttons-row">
         <button className="pdf-btn" onClick={() => exportPDF("Full Set")}>
           📄 Extract Full (Q + A)
         </button>

@@ -16,19 +16,32 @@
   color: #333;
   padding: 20px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* 🌸 MULTIPLE FLOATING BACKGROUND ELEMENTS */
+/* ✅ Floating Elements Wrapper - stays behind content */
+.floating-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* MULTIPLE FLOATING BACKGROUND ELEMENTS */
 .floating {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.7;
+  opacity: 0.2;
   animation: floatMove 10s ease-in-out infinite;
   filter: blur(3px);
+  z-index: 0;
 }
 
-/* Customize each floating element with different color, size, and delay */
+/* Unique colors & delays */
 .floating-1 {
   width: 200px;
   height: 200px;
@@ -130,10 +143,10 @@
     transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-400px) scale(1.05);
+    transform: translateY(-40px) scale(1.05);
   }
   100% {
-    transform: translateY(10px) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -142,9 +155,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   width: 100%;
   max-width: 1100px;
+  position: relative;
+  z-index: 10;
 }
 
 .back-btn {
@@ -169,6 +184,24 @@
   font-weight: 700;
   color: #fff;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  flex: 1;
+}
+
+/* SHOW/HIDE ANSWERS BUTTON */
+.toggle-answers-btn {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-answers-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
 }
 
 /* QUESTIONS LIST */
@@ -178,6 +211,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  z-index: 10;
 }
 
 /* QUESTION CARDS */
@@ -219,31 +253,43 @@
 .answer-text {
   color: #555;
   line-height: 1.6;
+  opacity: 0;
+  max-height: 0;
+  transition: all 0.5s ease;
 }
 
-.question-card:hover .question-text {
-  color: #667eea;
+.animate-answer {
+  opacity: 1;
+  max-height: 200px;
 }
 
-/* BUTTON SECTION */
-.buttons-row {
-  margin-top: 50px;
+/* FIXED BOTTOM BUTTON BAR */
+.fixed-buttons-row {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
   justify-content: center;
+  gap: 15px;
+  padding: 12px;
+  z-index: 15;
+  box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pdf-btn,
 .regen-btn {
-  padding: 12px 20px;
-  font-size: 1rem;
+  padding: 10px 16px;
+  font-size: 0.95rem;
   font-weight: 600;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   color: white;
+  white-space: nowrap;
 }
 
 .pdf-btn {
@@ -274,9 +320,9 @@
     padding: 18px;
   }
 
-  .buttons-row {
+  .fixed-buttons-row {
     flex-direction: column;
-    width: 100%;
+    gap: 10px;
   }
 
   .pdf-btn,
